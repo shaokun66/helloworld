@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hello World</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
+    }
+
+    .container {
+      text-align: center;
+      color: white;
+      padding: 40px;
+      animation: fadeInUp 0.8s ease both;
+    }
+
+    .emoji {
+      font-size: 80px;
+      display: block;
+      margin-bottom: 20px;
+      animation: bounce 2s infinite;
+    }
+
+    h1 {
+      font-size: clamp(3rem, 10vw, 6rem);
+      font-weight: 900;
+      letter-spacing: -2px;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      margin-bottom: 16px;
+    }
+
+    p.subtitle {
+      font-size: 1.3rem;
+      opacity: 0.85;
+      margin-bottom: 40px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 20px;
+      padding: 24px 40px;
+      display: inline-block;
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+
+    .card span {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: #4ade80;
+      border-radius: 50%;
+      margin-right: 8px;
+      animation: pulse 1.5s infinite;
+      vertical-align: middle;
+    }
+
+    /* particles */
+    .particles {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container { position: relative; z-index: 1; }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-15px); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.5; transform: scale(1.4); }
+    }
+
+    @keyframes float {
+      0%   { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10%  { opacity: 0.6; }
+      90%  { opacity: 0.6; }
+      100% { transform: translateY(-20px) rotate(720deg); opacity: 0; }
+    }
+
+    .dot {
+      position: absolute;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.6);
+      animation: float linear infinite;
+    }
+  </style>
+</head>
+<body>
+  <canvas class="particles" id="canvas"></canvas>
+
+  <div class="container">
+    <span class="emoji">👋</span>
+    <h1>Hello, World!</h1>
+    <p class="subtitle">我的第一个通过 WorkBuddy 部署在腾讯云上的网站</p>
+    <div class="card">
+      <span></span>
+      网站运行中 &nbsp;·&nbsp; 由 WorkBuddy 一键部署
+    </div>
+  </div>
+
+  <script>
+    // Generate floating dots
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+
+    const dots = Array.from({ length: 60 }, () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight + window.innerHeight,
+      r: Math.random() * 3 + 1,
+      speed: Math.random() * 0.8 + 0.2,
+      opacity: Math.random() * 0.5 + 0.1,
+    }));
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      dots.forEach(d => {
+        d.y -= d.speed;
+        if (d.y < -10) {
+          d.y = canvas.height + 10;
+          d.x = Math.random() * canvas.width;
+        }
+        ctx.beginPath();
+        ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${d.opacity})`;
+        ctx.fill();
+      });
+      requestAnimationFrame(animate);
+    }
+    animate();
+  </script>
+</body>
+</html>
